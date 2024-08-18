@@ -30,11 +30,14 @@ jobs:
       uses: 'google-github-actions/setup-gcloud@v2'
 
     - name: 'Terraform init'
-      run: 'terraform init'
+      run: |
+        terraform init \
+          -backend-config="bucket=${{ secrets.TF_STATE_BUCKET }}" \
+          -backend-config="prefix=terraform/state"
     
     - name: 'Terraform plan'
       run: 'terraform plan -no-color'
     
     - name: 'Terraform apply'
-      run: 'terraform apply -auto-approve'
+      run: 'terraform destroy -auto-approve'
 
